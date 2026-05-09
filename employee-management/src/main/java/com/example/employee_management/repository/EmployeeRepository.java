@@ -1,4 +1,12 @@
 package com.example.employee_management.repository;
 
-public class EmployeeRepository {
+import com.example.employee_management.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface EmployeeRepository
+        extends JpaRepository<Employee, Long> {
+
+    List<Employee> findByNameContainingIgnoreCase(String name);
 }
