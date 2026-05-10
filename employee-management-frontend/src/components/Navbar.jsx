@@ -1,40 +1,45 @@
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import './Navbar.css';
 
-function Navbar() {
+const Navbar = () => {
+    const { isAuthenticated, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const logout = () => {
-
-        localStorage.removeItem("token");
-
-        window.location.href = "/";
+    const handleLogout = () => {
+        logout();
+        navigate('/');
     };
 
     return (
-
-        <nav>
-
-            <Link to="/dashboard">
-                Dashboard
-            </Link>
-
-            <Link to="/employees">
-                Employees
-            </Link>
-
-            <Link to="/add-employee">
-                Add Employee
-            </Link>
-
-            <Link to="/search">
-                Search
-            </Link>
-
-            <button onClick={logout}>
-                Logout
-            </button>
-
+        <nav className="navbar glass-panel">
+            <div className="container navbar-container">
+                <Link to="/" className="navbar-logo">
+                    <h2>EMS</h2>
+                </Link>
+                <ul className="navbar-links">
+                    <li>
+                        <Link to="/" className="nav-link">Home</Link>
+                    </li>
+                    {isAuthenticated ? (
+                        <>
+                            <li>
+                                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                            </li>
+                            <li>
+                                <button onClick={handleLogout} className="btn btn-outline nav-btn">Logout</button>
+                            </li>
+                        </>
+                    ) : (
+                        <li>
+                            <Link to="/login" className="btn btn-primary nav-btn">HR Login</Link>
+                        </li>
+                    )}
+                </ul>
+            </div>
         </nav>
     );
-}
+};
 
 export default Navbar;
